@@ -65,7 +65,7 @@ const Index = () => {
   const { onRefresh } = qsSelector('userList');
   
   // 这里有个删除逻辑，然后直接调用就能刷新表格
-  userDelete = async ({ id }) => {
+  const userDelete = async ({ id }) => {
     await userDelete({ id });
     await onRefresh(); // qsRef('userList').onRefresh();
   };
