@@ -54,26 +54,32 @@ function qsConnect(component) {
 function createProxy(qsName) {
   return new Proxy({}, {
     get(_, p) {
-      const component = storage.getItem(qsName);
-      if (component && typeof component[p] === 'function') {
-        return function (...args) {
-          return component[p].call(component, ...args)
-        };
-      }
-      if (component) {
-        return component[p];
-      }
-      return undefined;
+      return (...args) => {
+        const component = storage.getItem(qsName);
+        if (component && typeof component[p] === 'function') {
+          return component[p].call(component, ...args);
+        }
+        if (component) {
+          return component[p];
+        }
+        return undefined;
+      };
     }
   })
 }
 
-// 选择器
+// 选择器，可以先获取后执行
 function qsSelector(qsName = 'default') {
   return createProxy(qsName);
+}
+
+// 选择器，只能实例化后在执行
+function qsRef(qsName = 'default') {
+  return storage.getItem(qsName);
 }
 
 export {
   qsConnect,
   qsSelector,
+  qsRef,
 }
