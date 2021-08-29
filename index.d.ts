@@ -5,3 +5,5 @@ export interface QsConnectProps {
 export function qsConnect<T = any>(target?: T): Function;
 
 export function qsSelector<T = any>(qsName?: string): T;
+
+export function qsRef<T = any>(qsName?: string): T;
