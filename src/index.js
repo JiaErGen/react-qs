@@ -54,16 +54,16 @@ function qsConnect(component) {
 function createProxy(qsName) {
   return new Proxy({}, {
     get(_, p) {
-      return (...args) => {
-        const component = storage.getItem(qsName);
-        if (component && typeof component[p] === 'function') {
-          return component[p].call(component, ...args);
-        }
-        if (component) {
-          return component[p];
-        }
-        return undefined;
-      };
+      const component = storage.getItem(qsName);
+      if (component && typeof component[p] === 'function') {
+        return function (...args) {
+          return component[p].call(component, ...args)
+        };
+      }
+      if (component) {
+        return component[p];
+      }
+      return undefined;
     }
   })
 }
